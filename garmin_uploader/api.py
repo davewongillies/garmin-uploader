@@ -146,7 +146,7 @@ class GarminAPI:
         # Check login
         res = session.get(URL_PROFILE)
         if not res.ok:
-            raise Exception("Login check failed.")
+            raise Exception("{} Login check failed: {}".format(res.status_code, res.headers))
         garmin_user = res.json()
         logger.info('Logged in as {}'.format(garmin_user['fullName']))
 
