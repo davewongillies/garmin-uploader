@@ -95,6 +95,8 @@ class GarminAPI:
             'webhost': sso_hostname,
         }
         res = session.get(URL_LOGIN, params=params)
+        logger.debug(res.url)
+        logger.debug(res.headers)
         if res.status_code != 200:
             raise Exception('No login form')
 
@@ -118,6 +120,10 @@ class GarminAPI:
         }
         res = session.post(URL_LOGIN, params=params, data=data,
                            headers=headers)
+
+        logger.debug(res.url)
+        logger.debug(res.headers)
+
         if not res.ok:
             raise Exception('Authentification failed.')
 
@@ -140,11 +146,15 @@ class GarminAPI:
             'Host': URL_HOST_CONNECT,
         }
         res = session.get(URL_POST_LOGIN, params=params, headers=headers)
+        logger.debug(res.url)
+        logger.debug(res.headers)
         if res.status_code != 200 and not res.history:
             raise Exception('Second auth step failed.')
 
         # Check login
         res = session.get(URL_PROFILE)
+        logger.debug(res.url)
+        logger.debug(res.headers)
         if not res.ok:
             raise Exception("{} Login check failed: {}".format(res.status_code, res.headers))
         garmin_user = res.json()
